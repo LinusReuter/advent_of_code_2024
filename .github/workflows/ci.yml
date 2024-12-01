@@ -29,5 +29,5 @@ jobs:
             # - name: cargo clippy
             #   run: cargo clippy -- -D warnings
             # uncomment to enable format linter
-            # - name: cargo fmt
-            #   run: cargo fmt --check
+            - name: cargo fmt
+              run: cargo fmt --check
