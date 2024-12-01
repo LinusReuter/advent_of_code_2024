@@ -1,21 +1,18 @@
 advent_of_code::solution!(1);
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let mut list1: Vec<i32> = vec![];
-    let mut list2: Vec<i32> = vec![];
+    let lines = input.lines().count();
+    let mut list1 = Vec::with_capacity(lines);
+    let mut list2 = Vec::with_capacity(lines);
 
     for line in input.lines() {
-        // split the line into two numbers and add them to the list
-        let numbers: Vec<i32> = line
-            .split_whitespace()
-            .map(|n| n.parse().unwrap())
-            .collect();
-        list1.push(numbers[0]);
-        list2.push(numbers[1]);
+        let mut nums = line.split_whitespace().map(|n| n.parse::<i32>().unwrap());
+        list1.push(nums.next().unwrap());
+        list2.push(nums.next().unwrap());
     }
 
-    list1.sort();
-    list2.sort();
+    list1.sort_unstable();
+    list2.sort_unstable();
     let sum: u32 = list1
         .iter()
         .zip(list2.iter())
@@ -25,26 +22,26 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    let mut list1: Vec<u32> = vec![];
-    let mut list2: Vec<u32> = vec![];
+    let lines = input.lines().count();
+    let mut list1 = Vec::with_capacity(lines);
+    let mut list2 = Vec::with_capacity(lines);
 
     for line in input.lines() {
-        // split the line into two numbers and add them to the list
-        let numbers: Vec<u32> = line
-            .split_whitespace()
-            .map(|n| n.parse().unwrap())
-            .collect();
-        list1.push(numbers[0]);
-        list2.push(numbers[1]);
+        let mut nums = line.split_whitespace().map(|n| n.parse::<u32>().unwrap());
+        list1.push(nums.next().unwrap());
+        list2.push(nums.next().unwrap());
     }
 
-    list1.sort();
-    list2.sort();
+    list1.sort_unstable();
+    list2.sort_unstable();
 
     let mut score: u32 = 0;
     let mut l2_index = 0;
     let mut l2_index_tailing = 0;
     for l1 in list1.iter() {
+        if list2[l2_index_tailing] < *l1 {
+            l2_index_tailing = l2_index;
+        }
         while l2_index_tailing < list2.len() && list2[l2_index_tailing] < *l1 {
             l2_index_tailing += 1;
         }
