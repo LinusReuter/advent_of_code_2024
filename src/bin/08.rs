@@ -12,10 +12,7 @@ pub fn part_one(input: &str) -> Option<u32> {
     for (y, line) in input.lines().enumerate() {
         for (x, c) in line.chars().enumerate() {
             if c.is_ascii_alphanumeric() {
-                antennas
-                    .entry(c)
-                    .or_default()
-                    .push((x as u32, y as u32));
+                antennas.entry(c).or_default().push((x as u32, y as u32));
             }
         }
     }
@@ -56,10 +53,7 @@ pub fn part_two(input: &str) -> Option<u32> {
     for (y, line) in input.lines().enumerate() {
         for (x, c) in line.chars().enumerate() {
             if c.is_ascii_alphanumeric() {
-                antennas
-                    .entry(c)
-                    .or_default()
-                    .push((x as u32, y as u32));
+                antennas.entry(c).or_default().push((x as u32, y as u32));
             }
         }
     }
