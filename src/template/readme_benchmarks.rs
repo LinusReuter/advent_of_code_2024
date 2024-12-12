@@ -54,10 +54,13 @@ fn locate_table(readme: &str) -> Result<TablePosition, Error> {
 
 fn construct_table(prefix: &str, timings: Timings, total_millis: f64) -> String {
     let header = format!("{prefix} Benchmarks");
+    // read explanation from file BenchmarkText.md
+    let explanation = fs::read_to_string("src/template/BenchmarkText.md").unwrap();
 
     let mut lines: Vec<String> = vec![
         MARKER.into(),
         header,
+        explanation,
         String::new(),
         "| Day | Part 1 | Part 2 |".into(),
         "| :---: | :---: | :---:  |".into(),

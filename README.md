@@ -24,6 +24,32 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Rust](https://www.
 <!--- advent_readme_stars table --->
 
 <!--- benchmarking table --->
+## Benchmarks
+Benchmarks are run on a Macbook Air M1 with 8GB of RAM and 8 cores. 
+The benchmarks are executed in release mode with the following command measuring an average time (details in usage section):
+```bash
+cargo time --all --store
+```
+
+The parts of each day are benchmarked separately, their calculation does not share any data / runtime.
+
+| Day | Part 1 | Part 2 |
+| :---: | :---: | :---:  |
+| [Day 1](./src/bin/01.rs) | `63.3µs` | `64.1µs` |
+| [Day 2](./src/bin/02.rs) | `119.0µs` | `162.9µs` |
+| [Day 3](./src/bin/03.rs) | `209.3µs` | `239.6µs` |
+| [Day 4](./src/bin/04.rs) | `1.7ms` | `85.3µs` |
+| [Day 5](./src/bin/05.rs) | `150.3µs` | `677.4µs` |
+| [Day 6](./src/bin/06.rs) | `42.4µs` | `283.1ms` |
+| [Day 7](./src/bin/07.rs) | `1.5ms` | `31.5ms` |
+| [Day 8](./src/bin/08.rs) | `18.5µs` | `50.0µs` |
+| [Day 9](./src/bin/09.rs) | `386.8µs` | `465.2µs` |
+| [Day 10](./src/bin/10.rs) | `420.3µs` | `229.1µs` |
+| [Day 11](./src/bin/11.rs) | `1.2ms` | `62.0ms` |
+| [Day 12](./src/bin/12.rs) | `156.9µs` | `246.4µs` |
+
+**Total: 384.79ms**
+<!--- benchmarking table --->
 
 ---
 
