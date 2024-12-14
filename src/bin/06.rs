@@ -1,6 +1,13 @@
+use advent_of_code::bin::util::grid::Grid;
+use advent_of_code::bin::util::point::UP;
 use std::cmp::PartialEq;
 
 advent_of_code::solution!(6);
+
+const EMPTY: u8 = b'.';
+const BLOCKED: u8 = b'#';
+const START: u8 = b'^';
+const VISITED: u8 = b'X';
 
 #[derive(Clone)]
 enum PositionStatus {
@@ -108,75 +115,25 @@ fn puzzle_has_loop(
 }
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let puzzle_dimensions = (input.lines().count(), input.lines().next()?.len());
-    let mut grid = vec![vec![PositionStatus::Empty; puzzle_dimensions.1]; puzzle_dimensions.0];
-    let mut current = (0, 0);
-    let mut direction = Direction::Up;
+    let mut grid = Grid::parse_ascii(input);
+    let mut direction = UP;
+    let mut current = grid.find(START)?;
+    let mut result = 1;
 
-    input.lines().enumerate().for_each(|(y, line)| {
-        line.chars().enumerate().for_each(|(x, c)| match c {
-            '.' => grid[y][x] = PositionStatus::Empty,
-            '#' => grid[y][x] = PositionStatus::Blocked,
-            '^' => {
-                grid[y][x] = PositionStatus::Empty;
-                current = (y, x);
-            }
-            _ => panic!("Invalid character in input"),
-        });
-    });
-
-    loop {
-        let next_pos = match direction {
-            Direction::Up => {
-                if current.0 == 0 {
-                    break;
-                }
-                (current.0 - 1, current.1)
-            }
-            Direction::Down => {
-                if current.0 == grid.len() - 1 {
-                    break;
-                }
-                (current.0 + 1, current.1)
-            }
-            Direction::Left => {
-                if current.1 == 0 {
-                    break;
-                }
-                (current.0, current.1 - 1)
-            }
-            Direction::Right => {
-                if current.1 == grid[0].len() - 1 {
-                    break;
-                }
-                (current.0, current.1 + 1)
-            }
-        };
-
-        match grid[next_pos.0][next_pos.1] {
-            PositionStatus::Empty | PositionStatus::Visited => {
-                grid[current.0][current.1] = PositionStatus::Visited;
-                current = next_pos;
-            }
-            PositionStatus::Blocked => {
-                // Turn right
-                direction = match direction {
-                    Direction::Up => Direction::Right,
-                    Direction::Right => Direction::Down,
-                    Direction::Down => Direction::Left,
-                    Direction::Left => Direction::Up,
-                };
-            }
+    grid[current] = VISITED;
+    while grid.contains(current + direction) {
+        if grid[current + direction] == BLOCKED {
+            direction = direction.clockwise();
+            continue;
+        }
+        current += direction;
+        if grid[current] == EMPTY {
+            grid[current] = VISITED;
+            result += 1;
         }
     }
-    grid[current.0][current.1] = PositionStatus::Visited;
 
-    Some(
-        grid.iter()
-            .flatten()
-            .filter(|&x| x == &PositionStatus::Visited)
-            .count() as u32,
-    )
+    Some(result)
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
