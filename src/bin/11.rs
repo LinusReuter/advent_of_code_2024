@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::str::FromStr;
 
 advent_of_code::solution!(11);
 
@@ -28,18 +27,17 @@ fn count_stones_after_blinks(
         return 1;
     }
 
-    let engraving_str = engraving.to_string();
-
     // Rule 1: Replace 0 with 1
     if engraving == 0 {
         return count_stones_after_blinks(1, blinks - 1, cache);
     }
 
     // Rule 2: Split stones with even number of digits
-    if engraving_str.len() % 2 == 0 {
-        let mid = engraving_str.len() / 2;
-        let left = u64::from_str(&engraving_str[..mid]).unwrap_or(0);
-        let right = u64::from_str(&engraving_str[mid..]).unwrap_or(0);
+    let digits = engraving.ilog10() + 1;
+    if digits % 2 == 0 {
+        let power = 10u64.pow(digits / 2);
+        let left = engraving / power;
+        let right = engraving % power;
 
         // Recursively count stones for left and right halves
         let count = count_stones_after_blinks(left, blinks - 1, cache)
