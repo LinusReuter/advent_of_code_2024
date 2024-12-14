@@ -44,7 +44,6 @@ fn parse_input(input: &str) -> Vec<Machine> {
 }
 
 fn play(mut machine: Machine, part_2: bool) -> i64 {
-
     if part_2 {
         machine.goal_x += 10000000000000;
         machine.goal_y += 10000000000000;
@@ -73,7 +72,7 @@ fn play(mut machine: Machine, part_2: bool) -> i64 {
 }
 
 pub fn part_one(input: &str) -> Option<u64> {
-    let mut machines = parse_input(input);
+    let machines = parse_input(input);
     let mut result = 0;
     for machine in machines {
         result += play(machine, false);
@@ -82,7 +81,7 @@ pub fn part_one(input: &str) -> Option<u64> {
 }
 
 pub fn part_two(input: &str) -> Option<u64> {
-    let mut machines = parse_input(input);
+    let machines = parse_input(input);
     let mut result = 0;
     for machine in machines {
         result += play(machine, true);
