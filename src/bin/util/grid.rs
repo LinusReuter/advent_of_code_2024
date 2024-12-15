@@ -55,6 +55,24 @@ impl<T> Grid<T> {
         self.data.iter().position(|&x| x == to_find).map(to_point)
     }
 
+    #[inline]
+    pub fn swap(&mut self, a: Point, b: Point) {
+        self.data.swap(
+            (a.y * self.width + a.x) as usize,
+            (b.y * self.width + b.x) as usize,
+        );
+    }
+
+    #[inline]
+    pub fn width(&self) -> i32 {
+        self.width
+    }
+
+    #[inline]
+    pub fn height(&self) -> i32 {
+        self.height
+    }
+
     pub fn iter(&self) -> impl Iterator<Item = (Point, &T)> {
         self.data.iter().enumerate().map(move |(i, value)| {
             (

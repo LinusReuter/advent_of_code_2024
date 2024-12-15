@@ -85,3 +85,16 @@ impl SubAssign for Point {
         self.y -= rhs.y;
     }
 }
+
+pub fn parse_directions(input: &[u8]) -> Vec<Point> {
+    input
+        .iter()
+        .filter_map(|&c| match c {
+            b'^' => Some(UP),
+            b'v' => Some(DOWN),
+            b'>' => Some(RIGHT),
+            b'<' => Some(LEFT),
+            _ => None, // Skip invalid inputs
+        })
+        .collect()
+}
