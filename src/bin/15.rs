@@ -19,7 +19,7 @@ pub fn part_one(input: &str) -> Option<u64> {
     }
 
     let mut result = 0;
-    for (point, &value) in grid.iter() {
+    for (point, &value) in grid.iter_with_points() {
         if value == b'O' {
             result += (point.x + point.y * 100) as u64;
         }
@@ -133,7 +133,7 @@ pub fn part_two(input: &str) -> Option<u64> {
     }
 
     let mut result = 0;
-    for (point, &value) in grid.iter() {
+    for (point, &value) in grid.iter_with_points() {
         if value == b'[' {
             result += (point.x + point.y * 100) as u64;
         }

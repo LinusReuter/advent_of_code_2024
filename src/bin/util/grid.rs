@@ -2,7 +2,7 @@
 use crate::bin::util::point::*;
 use std::ops::{Index, IndexMut};
 
-#[derive(Clone, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash, Debug)]
 pub struct Grid<T> {
     width: i32,
     height: i32,
@@ -22,6 +22,15 @@ impl Grid<u8> {
             width,
             height,
             data,
+        }
+    }
+
+    pub fn print(&self) {
+        for y in 0..self.height {
+            for x in 0..self.width {
+                print!("{}", self[Point::new(x, y)] as char);
+            }
+            println!();
         }
     }
 }
@@ -73,13 +82,17 @@ impl<T> Grid<T> {
         self.height
     }
 
-    pub fn iter(&self) -> impl Iterator<Item = (Point, &T)> {
+    pub fn iter_with_points(&self) -> impl Iterator<Item = (Point, &T)> {
         self.data.iter().enumerate().map(move |(i, value)| {
             (
                 Point::new(i as i32 % self.width, i as i32 / self.width),
                 value,
             )
         })
+    }
+
+    pub fn iter(&self) -> impl Iterator<Item = &T> {
+        self.data.iter()
     }
 }
 
