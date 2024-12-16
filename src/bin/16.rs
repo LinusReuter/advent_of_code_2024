@@ -1,7 +1,7 @@
-use std::cmp::Ordering;
-use std::collections::{BinaryHeap};
 use advent_of_code::bin::util::grid::Grid;
 use advent_of_code::bin::util::point::{Point, RIGHT};
+use std::cmp::Ordering;
+use std::collections::BinaryHeap;
 
 advent_of_code::solution!(16);
 
@@ -21,13 +21,13 @@ impl PartialEq<Self> for State {
 
 impl PartialOrd<Self> for State {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        other.cost.partial_cmp(&self.cost)
+        Some(self.cmp(other))
     }
 }
 
 impl Ord for State {
     // Reverse ordering so that the smallest element is at the top of the heap
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+    fn cmp(&self, other: &Self) -> Ordering {
         other.cost.cmp(&self.cost)
     }
 }
@@ -41,7 +41,12 @@ fn bfs(grid: &Grid<u8>, start: Point, goal: Point) -> Option<u64> {
         cost: 0,
     });
 
-    while let Some(State { position, direction, cost }) = heap.pop() {
+    while let Some(State {
+        position,
+        direction,
+        cost,
+    }) = heap.pop()
+    {
         if position == goal {
             return Some(cost as u64);
         }
@@ -50,7 +55,11 @@ fn bfs(grid: &Grid<u8>, start: Point, goal: Point) -> Option<u64> {
         }
         visited[position] = true;
 
-        for (direction, price) in [(direction, 1), (direction.clockwise(),1001), (direction.counter_clockwise(), 1001)] {
+        for (direction, price) in [
+            (direction, 1),
+            (direction.clockwise(), 1001),
+            (direction.counter_clockwise(), 1001),
+        ] {
             let next = position + direction;
             if grid[next] == b'#' {
                 continue;
@@ -75,7 +84,12 @@ fn bfs_cost_grid(grid: &Grid<u8>, start: Point, goal: Point) -> Grid<u32> {
         cost: 0,
     });
 
-    while let Some(State { position, direction, cost }) = heap.pop() {
+    while let Some(State {
+        position,
+        direction,
+        cost,
+    }) = heap.pop()
+    {
         if visited[position] {
             continue;
         }
@@ -87,7 +101,11 @@ fn bfs_cost_grid(grid: &Grid<u8>, start: Point, goal: Point) -> Grid<u32> {
 
         visited[position] = true;
 
-        for (direction, price) in [(direction, 1), (direction.clockwise(),1001), (direction.counter_clockwise(), 1001)] {
+        for (direction, price) in [
+            (direction, 1),
+            (direction.clockwise(), 1001),
+            (direction.counter_clockwise(), 1001),
+        ] {
             let next = position + direction;
 
             if grid[next] == b'#' {
@@ -104,12 +122,16 @@ fn bfs_cost_grid(grid: &Grid<u8>, start: Point, goal: Point) -> Grid<u32> {
 }
 
 fn find_points_on_shortest_paths(grid: &Grid<u8>, start: Point, goal: Point) -> Option<u64> {
-    let forward_costs = bfs_cost_grid(&grid, start, goal);
-    let backward_costs = bfs_cost_grid(&grid, goal, start);
+    let forward_costs = bfs_cost_grid(grid, start, goal);
+    let backward_costs = bfs_cost_grid(grid, goal, start);
     let shortest_path_cost = forward_costs[goal];
     let mut result = 0;
 
-    for combined_cost in forward_costs.iter().zip(backward_costs.iter()).map(|(a, b)| *a + *b) {
+    for combined_cost in forward_costs
+        .iter()
+        .zip(backward_costs.iter())
+        .map(|(a, b)| *a + *b)
+    {
         if combined_cost == shortest_path_cost || combined_cost == shortest_path_cost - 1000 {
             result += 1;
         }
