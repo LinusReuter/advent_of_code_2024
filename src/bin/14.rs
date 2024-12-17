@@ -119,10 +119,10 @@ pub fn part_two(input: &str) -> Option<u64> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    /* use super::*;
 
-    //#[test] // when testing, change dimensions to 11, 7
-    /*fn test_part_one() {
+    #[test] // when testing, change dimensions to 11, 7
+    fn test_part_one() {
         let result = part_one(&advent_of_code::template::read_file("examples", DAY));
         assert_eq!(result, Some(12));
     }*/
