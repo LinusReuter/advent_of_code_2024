@@ -1,13 +1,16 @@
 // A 2d point implementation.
 // Designed to be used in the context of a 2d grid and movement on it.
 
+use std::num::ParseIntError;
 use std::ops::{Add, AddAssign, Mul, Sub, SubAssign};
+use std::str::FromStr;
 
 pub const ORIGIN: Point = Point::new(0, 0);
 pub const UP: Point = Point::new(0, -1);
 pub const DOWN: Point = Point::new(0, 1);
 pub const LEFT: Point = Point::new(-1, 0);
 pub const RIGHT: Point = Point::new(1, 0);
+pub const DIRECTIONS_ORTHOGONAL: [Point; 4] = [UP, DOWN, LEFT, RIGHT];
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Point {
@@ -37,6 +40,17 @@ impl Point {
     #[inline]
     pub fn scale(self, factor: i32) -> Self {
         Point::new(self.x * factor, self.y * factor)
+    }
+}
+
+impl FromStr for Point {
+    type Err = ParseIntError;
+
+    fn from_str(str: &str) -> Result<Self, Self::Err> {
+        let mut parts = str.split(',');
+        let x = parts.next().ok_or(Err)?.parse::<i32>()?;
+        let y = parts.next().ok_or(Err)?.parse::<i32>()?;
+        Ok(Self::new(x, y))
     }
 }
 
@@ -87,14 +101,17 @@ impl SubAssign for Point {
 }
 
 pub fn parse_directions(input: &[u8]) -> Vec<Point> {
-    input
-        .iter()
-        .filter_map(|&c| match c {
-            b'^' => Some(UP),
-            b'v' => Some(DOWN),
-            b'>' => Some(RIGHT),
-            b'<' => Some(LEFT),
-            _ => None, // Skip invalid inputs
-        })
-        .collect()
+    input.iter().filter_map(|&c| parse_direction(c)).collect()
+}
+
+#[inline]
+#[must_use]
+pub const fn parse_direction(c: u8) -> Option<Point> {
+    match c {
+        b'^' => Some(UP),
+        b'v' => Some(DOWN),
+        b'>' => Some(RIGHT),
+        b'<' => Some(LEFT),
+        _ => None,
+    }
 }

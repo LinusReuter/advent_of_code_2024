@@ -1,3 +1,4 @@
+use std::intrinsics::write_bytes;
 // 2d grid backed by a single vector. Designed to be used with the Point struct.
 use crate::bin::util::point::*;
 use std::ops::{Index, IndexMut};
@@ -31,6 +32,14 @@ impl Grid<u8> {
                 print!("{}", self[Point::new(x, y)] as char);
             }
             println!();
+        }
+    }
+}
+
+impl Grid<bool> {
+    pub fn reset(&mut self, value: bool) {
+        unsafe {
+            write_bytes(self.data.as_mut_ptr(), value as u8, self.data.len());
         }
     }
 }
@@ -93,6 +102,22 @@ impl<T> Grid<T> {
 
     pub fn iter(&self) -> impl Iterator<Item = &T> {
         self.data.iter()
+    }
+
+    pub fn get(&self, point: Point) -> Option<&T> {
+        if self.contains(point) {
+            Some(&self[point])
+        } else {
+            None
+        }
+    }
+
+    pub fn get_mut(&mut self, point: Point) -> Option<&mut T> {
+        if self.contains(point) {
+            Some(&mut self[point])
+        } else {
+            None
+        }
     }
 }
 
