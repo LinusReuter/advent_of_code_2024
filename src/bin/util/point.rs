@@ -48,8 +48,14 @@ impl FromStr for Point {
 
     fn from_str(str: &str) -> Result<Self, Self::Err> {
         let mut parts = str.split(',');
-        let x = parts.next().ok_or(Err)?.parse::<i32>()?;
-        let y = parts.next().ok_or(Err)?.parse::<i32>()?;
+        let x = parts
+            .next()
+            .ok_or_else(|| "missing x coordinate".parse::<i32>().unwrap_err())?
+            .parse::<i32>()?;
+        let y = parts
+            .next()
+            .ok_or_else(|| "missing y coordinate".parse::<i32>().unwrap_err())?
+            .parse::<i32>()?;
         Ok(Self::new(x, y))
     }
 }

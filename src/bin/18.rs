@@ -105,13 +105,15 @@ pub fn part_one(input: &str) -> Option<u64> {
 }
 
 pub fn part_two(input: &str) -> Option<&str> {
+    let lines: Vec<&str> = input.lines().collect();
+
     // let mut grid = Grid::new(7, 7, b'.'); // for the example
     let mut grid = Grid::new(71, 71, b'.');
 
     // let first_x_elements = 12; // for the example
     let first_x_elements = 1024; // for the input
 
-    for line in input.lines().take(first_x_elements) {
+    for line in lines.iter().take(first_x_elements) {
         let pos = Point::from_str(line).unwrap();
         grid[pos] = b'#';
     }
@@ -122,18 +124,44 @@ pub fn part_two(input: &str) -> Option<&str> {
     let mut on_shortest_route = Grid::new(grid.width(), grid.height(), false);
     let mut visited = Grid::new(grid.width(), grid.height(), false);
 
-    highlight_shortest_path(&mut grid, &mut on_shortest_route, &mut visited, start, end);
-    for line in input.lines().skip(first_x_elements) {
-        let pos = Point::from_str(line).unwrap();
-        grid[pos] = b'#';
-        if !on_shortest_route[pos] {
-            continue;
+    let mut left = first_x_elements;
+    let mut right = lines.len();
+    let mut last_valid_config = grid;
+    let mut breaking_line = None;
+
+    while left < right {
+        let mid = left + (right - left) / 2;
+        let mut test_grid = last_valid_config.clone();
+
+        // Add walls from left to mid
+        for line in lines.iter().take(mid).skip(left) {
+            let pos = Point::from_str(line).unwrap();
+            test_grid[pos] = b'#';
         }
-        if !highlight_shortest_path(&mut grid, &mut on_shortest_route, &mut visited, start, end) {
-            return Some(line);
+
+        if highlight_shortest_path(
+            &mut test_grid,
+            &mut visited,
+            &mut on_shortest_route,
+            start,
+            end,
+        ) {
+            // Configuration is valid, try adding more walls
+            last_valid_config = test_grid;
+            left = mid + 1;
+        } else {
+            // Configuration breaks the path, need to try fewer walls
+            right = mid;
+            breaking_line = Some(mid);
         }
     }
-    None
+
+    // Return the first line that breaks the path
+    if let Some(line) = breaking_line {
+        Some(lines[line - 1])
+    } else {
+        None
+    }
 }
 
 #[cfg(test)]

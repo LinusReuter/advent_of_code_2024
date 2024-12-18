@@ -57,8 +57,9 @@ The parts of each day are benchmarked separately, their calculation does not sha
 | [Day 15](./src/bin/15.rs) | `247.2µs` | `338.3µs` |
 | [Day 16](./src/bin/16.rs) | `269.4µs` | `583.7µs` |
 | [Day 17](./src/bin/17.rs) | `1.4µs` | `19.8µs` |
+| [Day 18](./src/bin/18.rs) | `46.6µs` | `160.9µs` |
 
-**Total: 490.75ms**
+**Total: 490.95ms**
 <!--- benchmarking table --->
 
 ---
