@@ -46,7 +46,7 @@ The parts of each day are benchmarked separately, their calculation does not sha
 | [Day 3](./src/bin/03.rs) | `218.1µs` | `234.7µs` |
 | [Day 4](./src/bin/04.rs) | `1.7ms` | `85.3µs` |
 | [Day 5](./src/bin/05.rs) | `142.3µs` | `676.6µs` |
-| [Day 6](./src/bin/06.rs) | `15.6µs` | `281.5ms` |
+| [Day 6](./src/bin/06.rs) | `14.3µs` | `49.4ms` |
 | [Day 7](./src/bin/07.rs) | `1.4ms` | `31.3ms` |
 | [Day 8](./src/bin/08.rs) | `19.1µs` | `49.8µs` |
 | [Day 9](./src/bin/09.rs) | `411.1µs` | `456.6µs` |
@@ -60,7 +60,7 @@ The parts of each day are benchmarked separately, their calculation does not sha
 | [Day 17](./src/bin/17.rs) | `1.4µs` | `19.8µs` |
 | [Day 18](./src/bin/18.rs) | `46.6µs` | `160.9µs` |
 
-**Total: 490.95ms**
+**Total: 258.85ms**
 <!--- benchmarking table --->
 
 ---
